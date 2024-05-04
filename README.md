@@ -12,9 +12,9 @@ This repository is solely maintained by Docker, Inc.
 
 ## Usage:
 
-From `[https://get.docker.com](https://raw.githubusercontent.com/OVOJKzzZ/docker-install/master/get-docker.sh)`:
+From `https://raw.githubusercontent.com/OVOJKzzZ/docker-install/master/get-docker.sh`:
 ```shell
-curl -fsSL [https://get.docker.com](https://raw.githubusercontent.com/OVOJKzzZ/docker-install/master/get-docker.sh) -o get-docker.sh
+curl -fsSL https://raw.githubusercontent.com/OVOJKzzZ/docker-install/master/get-docker.sh -o get-docker.sh
 sh get-docker.sh
 ```
 
