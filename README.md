@@ -6,5 +6,6 @@ apt_repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/doc
 
 当 Debian 新的稳定版发布时，应更改
 ```shell
-/etc/apt/sources.list.d/docker.list"
+/etc/apt/sources.list.d/docker.list
+```
 目录下的 Debian 版本带代号。请先检查 docker-install.sh 脚本是否支持新的稳定版
