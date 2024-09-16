@@ -3,6 +3,7 @@
 ```shell
 apt_repo="deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] $DOWNLOAD_URL/linux/$lsb_dist <bookworm> $CHANNEL"
 ```
+---------
 
 当 Debian 新的稳定版发布时，应更改
 ```shell
