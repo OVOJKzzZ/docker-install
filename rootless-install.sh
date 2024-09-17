@@ -20,20 +20,19 @@ SCRIPT_COMMIT_SHA=UNKNOWN
 
 # This script should be run with an unprivileged user and install/setup Docker under $HOME/bin/.
 
-# The latest release is currently hard-coded.
-STABLE_LATEST="26.1.0"
+# latest version available in the stable channel.
+STABLE_LATEST="27.2.1"
+
+# latest version available in the test channel.
+TEST_LATEST="27.2.1"
 
 # The channel to install from:
 #   * test
 #   * stable
-#   * nightly (deprecated)
 DEFAULT_CHANNEL_VALUE="stable"
 if [ -z "$CHANNEL" ]; then
 	CHANNEL=$DEFAULT_CHANNEL_VALUE
 fi
-
-# The test release is currently hard-coded.
-TEST_LATEST="26.1.0"
 
 STATIC_RELEASE_URL=
 STATIC_RELEASE_ROOTLESS_URL=
@@ -48,11 +47,9 @@ case "$CHANNEL" in
         STATIC_RELEASE_URL="https://download.docker.com/linux/static/$CHANNEL/$(uname -m)/docker-${TEST_LATEST}.tgz"
         STATIC_RELEASE_ROOTLESS_URL="https://download.docker.com/linux/static/$CHANNEL/$(uname -m)/docker-rootless-extras-${TEST_LATEST}.tgz"
         ;;
-    "nightly")
-        >&2 echo "DEPRECATED: the nightly channel has been deprecated and is no longer supported by this script."; exit 1
-        ;;
     *)
-        >&2 echo "Aborting because of unknown CHANNEL \"$CHANNEL\". Set \$CHANNEL to either \"stable\" or \"test\"."; exit 1
+        >&2 echo "Aborting because of unknown CHANNEL \"$CHANNEL\". Set \$CHANNEL to either \"stable\" or \"test\"."
+        exit 1
         ;;
 esac
 
@@ -131,12 +128,12 @@ checks() {
 	# uidmap dependency check
 	if ! command -v newuidmap >/dev/null 2>&1; then
 		if command -v apt-get >/dev/null 2>&1; then
-			INSTRUCTIONS="apt-get install -y uidmap"
+			INSTRUCTIONS="apt-get -y install uidmap"
 		elif command -v dnf >/dev/null 2>&1; then
-			INSTRUCTIONS="dnf install -y shadow-utils"
+			INSTRUCTIONS="dnf -y install shadow-utils"
 		elif command -v yum >/dev/null 2>&1; then
 			INSTRUCTIONS="curl -o /etc/yum.repos.d/vbatts-shadow-utils-newxidmap-epel-7.repo https://copr.fedorainfracloud.org/coprs/vbatts/shadow-utils-newxidmap/repo/epel-7/vbatts-shadow-utils-newxidmap-epel-7.repo
-yum install -y shadow-utils46-newxidmap"
+yum -y install shadow-utils46-newxidmap"
 		else
 			echo "newuidmap binary not found. Please install with a package manager."
 			exit 1
@@ -147,10 +144,10 @@ yum install -y shadow-utils46-newxidmap"
 	if [ -z "$SKIP_IPTABLES" ] && ! command -v iptables >/dev/null 2>&1 && [ ! -f /sbin/iptables ] && [ ! -f /usr/sbin/iptables ]; then
 		if command -v apt-get >/dev/null 2>&1; then
 			INSTRUCTIONS="${INSTRUCTIONS}
-apt-get install -y iptables"
+apt-get -y install iptables"
 		elif command -v dnf >/dev/null 2>&1; then
 			INSTRUCTIONS="${INSTRUCTIONS}
-dnf install -y iptables"
+dnf -y install iptables"
 		else
 			echo "iptables binary not found. Please install with a package manager."
 			exit 1
